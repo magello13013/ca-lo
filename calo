@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Empréstimo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .simulador {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .simulador h2 {
+            text-align: center;
+        }
+        .simulador input, .simulador button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .simulador button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .simulador button:hover {
+            background-color: #45a049;
+        }
+        .resultado {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="simulador">
+        <h2>Simulador de Empréstimo</h2>
+        <input type="number" id="valor" placeholder="Valor do Empréstimo" />
+        <input type="number" id="taxa" placeholder="Taxa de Juros (%)" />
+        <input type="number" id="parcelas" placeholder="Número de Parcelas" />
+        <button onclick="calcularEmprestimo()">Simular</button>
+       
+        <div class="resultado" id="resultado" style="display: none;">
+            <p>Valor da Parcela: <span id="parcela"></span></p>
+            <p>Total a Pagar: <span id="total"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function calcularEmprestimo() {
+            const valor = parseFloat(document.getElementById('valor').value);
+            const taxa = parseFloat(document.getElementById('taxa').value) / 100;
+            const parcelas = parseInt(document.getElementById('parcelas').value);
+
+            if (!valor || !taxa || !parcelas) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            // Fórmula do financiamento (sistema de amortização francês - Price)
+            const parcela = (valor * (taxa * Math.pow(1 + taxa, parcelas))) / (Math.pow(1 + taxa, parcelas) - 1);
+            const total = parcela * parcelas;
+
+            // Exibe os valores calculados na tela
+            document.getElementById('parcela').innerText = parcela.toFixed(2);
+            document.getElementById('total').innerText = total.toFixed(2);
+            document.getElementById('resultado').style.display = "block";
+        }
+    </script>
+</body>
+</html>
